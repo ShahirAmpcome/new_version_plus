@@ -378,7 +378,13 @@ class NewVersionPlus {
                             ),
                           ),
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         dialogTextWidget,
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: actions,
