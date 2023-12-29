@@ -32,7 +32,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Instantiate NewVersion manager object (Using GCP Console app as example)
     final newVersion = NewVersionPlus(
-      iOSId: 'com.disney.disneyplus', androidId: 'com.whatsapp', androidPlayStoreCountry: "es_ES", androidHtmlReleaseNotes: true, //support country code
+      iOSId: 'com.disney.disneyplus',
+      androidId: 'com.whatsapp',
+      androidPlayStoreCountry: "es_ES",
+      androidHtmlReleaseNotes: true, //support country code
     );
 
     // You can let the plugin handle fetching the status and showing a dialog,
@@ -61,10 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
       release = version.releaseNotes ?? "";
       setState(() {});
     }
-    newVersion.showAlertIfNecessary(
-      context: context,
-      launchModeVersion: LaunchModeVersion.external,
-    );
+    // newVersion.showAlertIfNecessary(
+    //   context: context,
+    //   launchModeVersion: LaunchModeVersion.external,
+    // );
   }
 
   advancedStatusCheck(NewVersionPlus newVersion) async {
@@ -75,14 +78,14 @@ class _MyHomePageState extends State<MyHomePage> {
       debugPrint(status.localVersion);
       debugPrint(status.storeVersion);
       debugPrint(status.canUpdate.toString());
-      newVersion.showUpdateDialog(
-        context: context,
-        versionStatus: status,
-        dialogTitle: 'Custom Title',
-        dialogText: 'Custom Text',
-        launchModeVersion: LaunchModeVersion.external,
-        allowDismissal: false,
-      );
+      // newVersion.showUpdateDialog(
+      //   context: context,
+      //   versionStatus: status,
+      //   dialogTitle: 'Custom Title',
+      //   dialogText: 'Custom Text',
+      //   launchModeVersion: LaunchModeVersion.external,
+      //   allowDismissal: false,
+      // );
     }
   }
 

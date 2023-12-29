@@ -114,7 +114,9 @@ class NewVersionPlus {
   /// with buttons to dismiss the update alert, or go to the app store.
   showAlertIfNecessary({
     required BuildContext context,
+    required Widget dialogTextWidget,
     LaunchModeVersion launchModeVersion = LaunchModeVersion.normal,
+    String? imageUrl,
   }) async {
     final VersionStatus? versionStatus = await getVersionStatus();
 
@@ -124,6 +126,8 @@ class NewVersionPlus {
         context: context,
         versionStatus: versionStatus,
         launchModeVersion: launchModeVersion,
+        imageUrl: imageUrl,
+        dialogTextWidget: dialogTextWidget,
       );
     }
   }
@@ -251,7 +255,9 @@ class NewVersionPlus {
   void showUpdateDialog({
     required BuildContext context,
     required VersionStatus versionStatus,
+    required Widget dialogTextWidget,
     String dialogTitle = 'Update Available',
+    String? imageUrl,
     String? dialogText,
     String updateButtonText = 'Update',
     bool allowDismissal = true,
@@ -259,42 +265,50 @@ class NewVersionPlus {
     VoidCallback? dismissAction,
     LaunchModeVersion launchModeVersion = LaunchModeVersion.normal,
   }) async {
-    final dialogTitleWidget = Text(dialogTitle);
-    final dialogTextWidget = Text(
-      dialogText ??
-          'You can now update this app from ${versionStatus.localVersion} to ${versionStatus.storeVersion}',
-    );
+    // final dialogTitleWidget = Text(dialogTitle);
+    // final dialogTextWidget = Text(
+    //   dialogText ??
+    //       'Update to the latest version of the CENTA App for newer features and a better learning experience! ${versionStatus.localVersion} to ${versionStatus.storeVersion}',
+    // );
 
     final launchMode = launchModeVersion == LaunchModeVersion.external
         ? LaunchMode.externalApplication
         : LaunchMode.platformDefault;
 
-    final updateButtonTextWidget = Text(updateButtonText);
+    final updateButtonTextWidget = Text(
+      updateButtonText,
+      style: const TextStyle(color: Colors.red),
+    );
 
     List<Widget> actions = [
-      Platform.isAndroid
-          ? TextButton(
-              onPressed: () => _updateActionFunc(
-                allowDismissal: allowDismissal,
-                context: context,
-                appStoreLink: versionStatus.appStoreLink,
-                launchMode: launchMode,
-              ),
-              child: updateButtonTextWidget,
-            )
-          : CupertinoDialogAction(
-              onPressed: () => _updateActionFunc(
-                allowDismissal: allowDismissal,
-                context: context,
-                appStoreLink: versionStatus.appStoreLink,
-                launchMode: launchMode,
-              ),
-              child: updateButtonTextWidget,
-            ),
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          splashFactory: NoSplash.splashFactory,
+          backgroundColor: Colors.white,
+          side: const BorderSide(width: 1, color: Colors.black),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(13.0))),
+        ),
+        onPressed: () => _updateActionFunc(
+          allowDismissal: allowDismissal,
+          context: context,
+          appStoreLink: versionStatus.appStoreLink,
+          launchMode: launchMode,
+        ),
+        child: const Text(
+          "Update",
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      )
     ];
 
     if (allowDismissal) {
-      final dismissButtonTextWidget = Text(dismissButtonText);
+      final dismissButtonTextWidget = Text(
+        dismissButtonText,
+        style: const TextStyle(color: Colors.black),
+      );
       dismissAction = dismissAction ??
           () => Navigator.of(context, rootNavigator: true).pop();
       actions.add(
@@ -317,14 +331,60 @@ class NewVersionPlus {
         return WillPopScope(
             child: Platform.isAndroid
                 ? AlertDialog(
-                    title: dialogTitleWidget,
-                    content: dialogTextWidget,
-                    actions: actions,
+                    titlePadding: const EdgeInsets.all(0),
+                    backgroundColor: const Color(0xFFC6D0D9),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                    title: Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1.4),
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color(0xFFC6D0D9),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 120,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(imageUrl!),
+                              ),
+                            ),
+                          ),
+                          dialogTextWidget,
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: actions,
+                          )
+                        ],
+                      ),
+                    ),
                   )
                 : CupertinoAlertDialog(
-                    title: dialogTitleWidget,
-                    content: dialogTextWidget,
-                    actions: actions,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 120,
+                          width: 180,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(imageUrl!),
+                            ),
+                          ),
+                        ),
+                        dialogTextWidget,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: actions,
+                        )
+                      ],
+                    ),
                   ),
             onWillPop: () => Future.value(allowDismissal));
       },
