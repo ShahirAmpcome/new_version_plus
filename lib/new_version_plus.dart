@@ -327,7 +327,7 @@ class NewVersionPlus {
         return WillPopScope(
             child: Platform.isAndroid
                 ? AlertDialog(
-                    titlePadding: const EdgeInsets.all(0),
+                    titlePadding: EdgeInsets.zero,
                     backgroundColor: colorTheme.colorScheme.background,
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
@@ -362,8 +362,10 @@ class NewVersionPlus {
                       ),
                     ),
                   )
-                : CupertinoAlertDialog(
-                    title: Container(
+                : AlertDialog(
+                    contentPadding: EdgeInsets.zero,
+                    content: Container(
+                      height: 280,
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
                           border: Border.all(color: colorTheme.dividerColor),
