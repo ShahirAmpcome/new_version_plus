@@ -283,7 +283,7 @@ class NewVersionPlus {
         style: ElevatedButton.styleFrom(
           splashFactory: NoSplash.splashFactory,
           backgroundColor: colorTheme.colorScheme.background,
-          side: const BorderSide(width: 1, color: Colors.black),
+          side: BorderSide(width: 1, color: colorTheme.dividerColor),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(13.0))),
         ),
@@ -334,7 +334,8 @@ class NewVersionPlus {
                     title: Container(
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 1.4),
+                        border: Border.all(
+                            color: colorTheme.dividerColor, width: 1.4),
                         borderRadius: BorderRadius.circular(10),
                         color: colorTheme.colorScheme.background,
                       ),
