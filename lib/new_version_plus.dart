@@ -115,6 +115,7 @@ class NewVersionPlus {
   showAlertIfNecessary({
     required BuildContext context,
     required Widget dialogTextWidget,
+    required ThemeData colorTheme,
     LaunchModeVersion launchModeVersion = LaunchModeVersion.normal,
     String? imageUrl,
   }) async {
@@ -123,6 +124,7 @@ class NewVersionPlus {
     if (versionStatus != null && versionStatus.canUpdate) {
       // ignore: use_build_context_synchronously
       showUpdateDialog(
+        colorTheme: colorTheme,
         context: context,
         versionStatus: versionStatus,
         launchModeVersion: launchModeVersion,
@@ -256,6 +258,7 @@ class NewVersionPlus {
     required BuildContext context,
     required VersionStatus versionStatus,
     required Widget dialogTextWidget,
+    required ThemeData colorTheme,
     String dialogTitle = 'Update Available',
     String? imageUrl,
     String? dialogText,
@@ -275,16 +278,11 @@ class NewVersionPlus {
         ? LaunchMode.externalApplication
         : LaunchMode.platformDefault;
 
-    final updateButtonTextWidget = Text(
-      updateButtonText,
-      style: const TextStyle(color: Colors.red),
-    );
-
     List<Widget> actions = [
       ElevatedButton(
         style: ElevatedButton.styleFrom(
           splashFactory: NoSplash.splashFactory,
-          backgroundColor: Colors.white,
+          backgroundColor: colorTheme.colorScheme.background,
           side: const BorderSide(width: 1, color: Colors.black),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(13.0))),
@@ -295,11 +293,9 @@ class NewVersionPlus {
           appStoreLink: versionStatus.appStoreLink,
           launchMode: launchMode,
         ),
-        child: const Text(
+        child: Text(
           "Update",
-          style: TextStyle(
-            color: Colors.black,
-          ),
+          style: TextStyle(color: colorTheme.textTheme.bodyLarge!.color!),
         ),
       )
     ];
@@ -307,7 +303,7 @@ class NewVersionPlus {
     if (allowDismissal) {
       final dismissButtonTextWidget = Text(
         dismissButtonText,
-        style: const TextStyle(color: Colors.black),
+        style: TextStyle(color: colorTheme.textTheme.bodyLarge!.color!),
       );
       dismissAction = dismissAction ??
           () => Navigator.of(context, rootNavigator: true).pop();
@@ -332,7 +328,7 @@ class NewVersionPlus {
             child: Platform.isAndroid
                 ? AlertDialog(
                     titlePadding: const EdgeInsets.all(0),
-                    backgroundColor: const Color(0xFFC6D0D9),
+                    backgroundColor: colorTheme.colorScheme.background,
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
                     title: Container(
@@ -340,7 +336,7 @@ class NewVersionPlus {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: 1.4),
                         borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xFFC6D0D9),
+                        color: colorTheme.colorScheme.background,
                       ),
                       child: Column(
                         children: [
@@ -366,30 +362,37 @@ class NewVersionPlus {
                     ),
                   )
                 : CupertinoAlertDialog(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 120,
-                          width: 180,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(imageUrl!),
+                    title: Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: colorTheme.dividerColor),
+                          borderRadius: BorderRadius.circular(10),
+                          color: colorTheme.colorScheme.background),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 120,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(imageUrl!),
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        dialogTextWidget,
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: actions,
-                        )
-                      ],
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          dialogTextWidget,
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: actions,
+                          )
+                        ],
+                      ),
                     ),
                   ),
             onWillPop: () => Future.value(allowDismissal));
