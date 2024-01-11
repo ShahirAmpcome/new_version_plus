@@ -278,61 +278,60 @@ class NewVersionPlus {
         ? LaunchMode.externalApplication
         : LaunchMode.platformDefault;
 
-    List<Widget> actions = [
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          splashFactory: NoSplash.splashFactory,
-          backgroundColor: colorTheme.colorScheme.background,
-          side: BorderSide(width: 1, color: colorTheme.dividerColor),
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(13.0))),
-        ),
-        onPressed: () => _updateActionFunc(
-          allowDismissal: allowDismissal,
-          context: context,
-          appStoreLink: versionStatus.appStoreLink,
-          launchMode: launchMode,
-        ),
-        child: Text(
-          "Update",
-          style: TextStyle(color: colorTheme.textTheme.bodyLarge!.color!),
-        ),
-      )
-    ];
-
-    if (allowDismissal) {
-      final dismissButtonTextWidget = Text(
-        dismissButtonText,
+    Widget actions = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        splashFactory: NoSplash.splashFactory,
+        backgroundColor: colorTheme.colorScheme.background,
+        side: BorderSide(width: 1, color: colorTheme.dividerColor),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(13.0))),
+      ),
+      onPressed: () => _updateActionFunc(
+        allowDismissal: allowDismissal,
+        context: context,
+        appStoreLink: versionStatus.appStoreLink,
+        launchMode: launchMode,
+      ),
+      child: Text(
+        "Update",
         style: TextStyle(color: colorTheme.textTheme.bodyLarge!.color!),
-      );
-      dismissAction = dismissAction ??
-          () => Navigator.of(context, rootNavigator: true).pop();
-      actions.add(
-        Platform.isAndroid
-            ? TextButton(
-                onPressed: dismissAction,
-                child: dismissButtonTextWidget,
-              )
-            : CupertinoDialogAction(
-                onPressed: dismissAction,
-                child: dismissButtonTextWidget,
-              ),
-      );
-    }
+      ),
+    );
+
+    // if (allowDismissal) {
+    //   final dismissButtonTextWidget = Text(
+    //     dismissButtonText,
+    //     style: TextStyle(color: colorTheme.textTheme.bodyLarge!.color!),
+    //   );
+    //   dismissAction = dismissAction ??
+    //       () => Navigator.of(context, rootNavigator: true).pop();
+    //   actions.add(
+    //       /*  !Platform.isAndroid
+    //         ? */
+    //       TextButton(
+    //     onPressed: dismissAction,
+    //     child: dismissButtonTextWidget,
+    //   )
+    //       // : CupertinoDialogAction(
+    //       //     onPressed: dismissAction,
+    //       //     child: dismissButtonTextWidget,
+    //       //   ),
+    //       );
+    // }
 
     await showDialog(
       context: context,
       barrierDismissible: allowDismissal,
       builder: (BuildContext context) {
         return WillPopScope(
-            child: Platform.isAndroid
+            child: /* false //!Platform.isAndroid
                 ? AlertDialog(
                     titlePadding: EdgeInsets.zero,
                     backgroundColor: colorTheme.colorScheme.background,
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
                     title: Container(
-                      padding: const EdgeInsets.all(15),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         border: Border.all(
                             color: colorTheme.dividerColor, width: 1.4),
@@ -354,50 +353,54 @@ class NewVersionPlus {
                           const SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: actions,
-                          )
+                          actions
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //   children: actions,
+                          // )
                         ],
                       ),
                     ),
                   )
-                : AlertDialog(
-                    contentPadding: EdgeInsets.zero,
-                    content: Container(
-                      height: 280,
-                      padding: const EdgeInsets.all(15),
+                :  */
+                CupertinoAlertDialog(
+              // contentPadding: EdgeInsets.zero,
+              content: Container(
+                height: 245,
+                padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                decoration: const BoxDecoration(
+                    // border: Border.all(color: colorTheme.dividerColor),
+                    // borderRadius: BorderRadius.circular(10),
+                    // color: colorTheme.colorScheme.background
+                    ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 120,
+                      width: 180,
                       decoration: BoxDecoration(
-                          border: Border.all(color: colorTheme.dividerColor),
-                          borderRadius: BorderRadius.circular(10),
-                          color: colorTheme.colorScheme.background),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 120,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(imageUrl!),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          dialogTextWidget,
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: actions,
-                          )
-                        ],
+                        image: DecorationImage(
+                          image: AssetImage(imageUrl!),
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    dialogTextWidget,
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    actions
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: actions,
+                    // )
+                  ],
+                ),
+              ),
+            ),
             onWillPop: () => Future.value(allowDismissal));
       },
     );
