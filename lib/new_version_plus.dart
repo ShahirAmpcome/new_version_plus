@@ -118,19 +118,20 @@ class NewVersionPlus {
     required ThemeData colorTheme,
     LaunchModeVersion launchModeVersion = LaunchModeVersion.normal,
     String? imageUrl,
+    bool allowDismissal = true,
   }) async {
     final VersionStatus? versionStatus = await getVersionStatus();
 
     if (versionStatus != null && versionStatus.canUpdate) {
       // ignore: use_build_context_synchronously
       showUpdateDialog(
-        colorTheme: colorTheme,
-        context: context,
-        versionStatus: versionStatus,
-        launchModeVersion: launchModeVersion,
-        imageUrl: imageUrl,
-        dialogTextWidget: dialogTextWidget,
-      );
+          colorTheme: colorTheme,
+          context: context,
+          versionStatus: versionStatus,
+          launchModeVersion: launchModeVersion,
+          imageUrl: imageUrl,
+          dialogTextWidget: dialogTextWidget,
+          allowDismissal: allowDismissal);
     }
   }
 
