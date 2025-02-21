@@ -263,6 +263,7 @@ class NewVersionPlus {
     String dialogTitle = 'Update Available',
     String? imageUrl,
     String? dialogText,
+    double dialogHeight = 245,
     String updateButtonText = 'Update',
     bool allowDismissal = true,
     String dismissButtonText = 'Maybe Later',
@@ -366,8 +367,9 @@ class NewVersionPlus {
                 :  */
                 CupertinoAlertDialog(
               // contentPadding: EdgeInsets.zero,
+
               content: Container(
-                height: 245,
+                height: dialogHeight,
                 padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                 decoration: const BoxDecoration(
                     // border: Border.all(color: colorTheme.dividerColor),
