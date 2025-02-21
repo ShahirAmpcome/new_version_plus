@@ -116,6 +116,8 @@ class NewVersionPlus {
     required BuildContext context,
     required Widget dialogTextWidget,
     required ThemeData colorTheme,
+    EdgeInsets? insetPadding,
+    EdgeInsetsGeometry? contentPadding,
     LaunchModeVersion launchModeVersion = LaunchModeVersion.normal,
     String? imageUrl,
     bool allowDismissal = true,
@@ -131,6 +133,8 @@ class NewVersionPlus {
           launchModeVersion: launchModeVersion,
           imageUrl: imageUrl,
           dialogTextWidget: dialogTextWidget,
+          contentPadding: contentPadding,
+          insetPadding: insetPadding,
           allowDismissal: allowDismissal);
     }
   }
@@ -266,6 +270,8 @@ class NewVersionPlus {
     String updateButtonText = 'Update',
     bool allowDismissal = true,
     String dismissButtonText = 'Maybe Later',
+    EdgeInsets? insetPadding,
+    EdgeInsetsGeometry? contentPadding,
     VoidCallback? dismissAction,
     LaunchModeVersion launchModeVersion = LaunchModeVersion.normal,
   }) async {
@@ -335,8 +341,9 @@ class NewVersionPlus {
               ),
               child: AlertDialog(
                 clipBehavior: Clip.none,
-                insetPadding: const EdgeInsets.symmetric(horizontal: 25),
-                contentPadding: const EdgeInsets.all(20),
+                insetPadding:
+                    insetPadding ?? const EdgeInsets.symmetric(horizontal: 25),
+                contentPadding: contentPadding ?? const EdgeInsets.all(20),
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(10.0),
@@ -352,6 +359,7 @@ class NewVersionPlus {
                     color: colorTheme.colorScheme.background,
                   ),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
                         height: 120,
