@@ -117,6 +117,7 @@ class NewVersionPlus {
     required Widget dialogTextWidget,
     required ThemeData colorTheme,
     LaunchModeVersion launchModeVersion = LaunchModeVersion.normal,
+    double? dialogHeight,
     String? imageUrl,
     bool allowDismissal = true,
   }) async {
@@ -130,6 +131,7 @@ class NewVersionPlus {
           versionStatus: versionStatus,
           launchModeVersion: launchModeVersion,
           imageUrl: imageUrl,
+          dialogHeight: dialogHeight ?? 245,
           dialogTextWidget: dialogTextWidget,
           allowDismissal: allowDismissal);
     }
