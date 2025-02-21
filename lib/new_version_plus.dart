@@ -117,7 +117,6 @@ class NewVersionPlus {
     required Widget dialogTextWidget,
     required ThemeData colorTheme,
     LaunchModeVersion launchModeVersion = LaunchModeVersion.normal,
-    double? dialogHeight,
     String? imageUrl,
     bool allowDismissal = true,
   }) async {
@@ -131,7 +130,6 @@ class NewVersionPlus {
           versionStatus: versionStatus,
           launchModeVersion: launchModeVersion,
           imageUrl: imageUrl,
-          dialogHeight: dialogHeight ?? 245,
           dialogTextWidget: dialogTextWidget,
           allowDismissal: allowDismissal);
     }
@@ -265,7 +263,6 @@ class NewVersionPlus {
     String dialogTitle = 'Update Available',
     String? imageUrl,
     String? dialogText,
-    double dialogHeight = 245,
     String updateButtonText = 'Update',
     bool allowDismissal = true,
     String dismissButtonText = 'Maybe Later',
@@ -328,46 +325,59 @@ class NewVersionPlus {
       barrierDismissible: allowDismissal,
       builder: (BuildContext context) {
         return WillPopScope(
-            child: /* false //!Platform.isAndroid
-                ? AlertDialog(
-                    titlePadding: EdgeInsets.zero,
-                    backgroundColor: colorTheme.colorScheme.background,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                    title: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: colorTheme.dividerColor, width: 1.4),
-                        borderRadius: BorderRadius.circular(10),
-                        color: colorTheme.colorScheme.background,
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 120,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(imageUrl!),
-                              ),
-                            ),
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                dialogTheme: DialogTheme(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              child: AlertDialog(
+                clipBehavior: Clip.none,
+                insetPadding: const EdgeInsets.symmetric(horizontal: 25),
+                contentPadding: const EdgeInsets.all(20),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                content: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    border:
+                        Border.all(color: colorTheme.dividerColor, width: 1.4),
+                    borderRadius: BorderRadius.circular(10),
+                    color: colorTheme.colorScheme.background,
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 120,
+                        width: 180,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(imageUrl!),
                           ),
-                          dialogTextWidget,
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          actions
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          //   children: actions,
-                          // )
-                        ],
+                        ),
                       ),
-                    ),
-                  )
-                :  */
-                CupertinoAlertDialog(
+                      dialogTextWidget,
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      actions
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //   children: actions,
+                      // )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            // :  */
+            /* CupertinoAlertDialog(
               // contentPadding: EdgeInsets.zero,
 
               content: Container(
@@ -405,7 +415,7 @@ class NewVersionPlus {
                   ],
                 ),
               ),
-            ),
+            ),*/
             onWillPop: () => Future.value(allowDismissal));
       },
     );
