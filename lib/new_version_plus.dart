@@ -133,6 +133,7 @@ class NewVersionPlus {
           versionStatus: versionStatus,
           launchModeVersion: launchModeVersion,
           imageUrl: imageUrl,
+          backgroundColor: backgroundColor,
           dialogTextWidget: dialogTextWidget,
           contentPadding: contentPadding,
           insetPadding: insetPadding,
