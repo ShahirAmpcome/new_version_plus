@@ -118,6 +118,7 @@ class NewVersionPlus {
     required ThemeData colorTheme,
     EdgeInsets? insetPadding,
     EdgeInsetsGeometry? contentPadding,
+    Color? backgroundColor,
     LaunchModeVersion launchModeVersion = LaunchModeVersion.normal,
     String? imageUrl,
     bool allowDismissal = true,
@@ -272,6 +273,7 @@ class NewVersionPlus {
     String dismissButtonText = 'Maybe Later',
     EdgeInsets? insetPadding,
     EdgeInsetsGeometry? contentPadding,
+    Color? backgroundColor,
     VoidCallback? dismissAction,
     LaunchModeVersion launchModeVersion = LaunchModeVersion.normal,
   }) async {
@@ -341,11 +343,13 @@ class NewVersionPlus {
               ),
               child: AlertDialog(
                 clipBehavior: Clip.none,
+                backgroundColor: backgroundColor,
                 insetPadding:
                     insetPadding ?? const EdgeInsets.symmetric(horizontal: 25),
                 contentPadding: contentPadding ?? const EdgeInsets.all(20),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(color: colorTheme.dividerColor, width: 1.4),
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(10.0),
                   ),
                 ),
@@ -353,10 +357,8 @@ class NewVersionPlus {
                   width: double.infinity,
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    border:
-                        Border.all(color: colorTheme.dividerColor, width: 1.4),
                     borderRadius: BorderRadius.circular(10),
-                    color: colorTheme.colorScheme.background,
+                    color: backgroundColor,
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
