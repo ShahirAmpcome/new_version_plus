@@ -3,7 +3,6 @@ library new_version_plus;
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
@@ -291,7 +290,7 @@ class NewVersionPlus {
     Widget actions = ElevatedButton(
       style: ElevatedButton.styleFrom(
         splashFactory: NoSplash.splashFactory,
-        backgroundColor: colorTheme.colorScheme.background,
+        backgroundColor: colorTheme.colorScheme.surface,
         side: BorderSide(width: 1, color: colorTheme.dividerColor),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(13.0))),
@@ -333,62 +332,63 @@ class NewVersionPlus {
       context: context,
       barrierDismissible: allowDismissal,
       builder: (BuildContext context) {
-        return WillPopScope(
-            child: Theme(
-              data: Theme.of(context).copyWith(
-                dialogTheme: DialogTheme(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-              ),
-              child: AlertDialog(
-                clipBehavior: Clip.none,
-                backgroundColor: backgroundColor,
-                insetPadding:
-                    insetPadding ?? const EdgeInsets.symmetric(horizontal: 25),
-                contentPadding: contentPadding ?? const EdgeInsets.all(20),
+        return PopScope(
+          canPop: allowDismissal,
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              dialogTheme: DialogThemeData(
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(color: colorTheme.dividerColor, width: 1.4),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10.0),
-                  ),
-                ),
-                content: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: backgroundColor,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        height: 120,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(imageUrl!),
-                          ),
-                        ),
-                      ),
-                      dialogTextWidget,
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      actions
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //   children: actions,
-                      // )
-                    ],
-                  ),
+                  borderRadius: BorderRadius.circular(15),
                 ),
               ),
             ),
-            // :  */
-            /* CupertinoAlertDialog(
+            child: AlertDialog(
+              clipBehavior: Clip.none,
+              backgroundColor: backgroundColor,
+              insetPadding:
+                  insetPadding ?? const EdgeInsets.symmetric(horizontal: 25),
+              contentPadding: contentPadding ?? const EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: colorTheme.dividerColor, width: 1.4),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+              ),
+              content: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: backgroundColor,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 120,
+                      width: 180,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(imageUrl!),
+                        ),
+                      ),
+                    ),
+                    dialogTextWidget,
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    actions
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: actions,
+                    // )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // :  */
+          /* CupertinoAlertDialog(
               // contentPadding: EdgeInsets.zero,
 
               content: Container(
@@ -427,7 +427,8 @@ class NewVersionPlus {
                 ),
               ),
             ),*/
-            onWillPop: () => Future.value(allowDismissal));
+          // onWillPop: () => Future.value(allowDismissal),
+        );
       },
     );
   }
